@@ -6,7 +6,7 @@ use std::sync::atomic::Ordering;
 use std::sync::Arc;
 use tauri::menu::{Menu, MenuItem, PredefinedMenuItem};
 use tauri::tray::{MouseButton, MouseButtonState, TrayIcon, TrayIconBuilder, TrayIconEvent};
-use tauri::{AppHandle, Manager};
+use tauri::{AppHandle, Manager, Runtime};
 
 use crate::{window, Inner};
 
@@ -39,12 +39,12 @@ fn title_for(lang: &str) -> &'static str {
     }
 }
 
-fn build_menu<M: Manager>(
+fn build_menu<M: Manager<R>, R: Runtime>(
     app: &M,
     show: &str,
     toggle: &str,
     quit: &str,
-) -> tauri::Result<Menu> {
+) -> tauri::Result<Menu<R>> {
     let show = MenuItem::with_id(app, "show", show, true, None::<&str>)?;
     let toggle = MenuItem::with_id(app, "toggle", toggle, true, None::<&str>)?;
     let sep = PredefinedMenuItem::separator(app)?;
@@ -62,7 +62,7 @@ pub fn apply_language(app: &AppHandle, inner: &Arc<Inner>, lang: &str) {
             if let Ok(menu) = build_menu(app, show, toggle, quit) {
                 let _ = icon.set_menu(Some(menu));
             }
-            let _ = icon.set_tooltip(tooltip);
+            let _ = icon.set_tooltip(Some(tooltip));
         }
     }
     if let Some(w) = app.get_webview_window(window::LABEL) {
