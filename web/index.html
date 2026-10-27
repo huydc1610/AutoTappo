@@ -14,12 +14,12 @@
         <img src="logo.png" alt="AutoTappo Logo" class="app-logo">
         <div class="logo-text">
           <h1>AutoTappo</h1>
-          <span class="sub-title">WuwaTappo 智能挂机</span>
+          <span class="sub-title" data-i18n="header.subtitle">WuwaTappo 智能挂机</span>
         </div>
       </div>
       
       <!-- 右上角：极简无感版本胶囊与更新指示器 (告别突兀黄色，融入暗色美学) -->
-      <button id="btn-bell" class="version-badge-btn" title="点击检查更新与版本日志">
+      <button id="btn-bell" class="version-badge-btn" data-i18n-title="header.bellTitle" title="点击检查更新与版本日志">
         <svg class="bell-svg" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
           <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
@@ -35,10 +35,10 @@
       <div class="status-content">
         <span class="status-badge" id="status-badge">已暂停</span>
         <div class="sent-counter">
-          <span class="counter-label">本次模拟点击</span>
+          <span class="counter-label" data-i18n="counter.label">本次模拟点击</span>
           <div class="counter-row">
             <span class="counter-value" id="counter-value">0</span>
-            <button id="btn-reset" class="mini-btn" title="清零本次计数">↺</button>
+            <button id="btn-reset" class="mini-btn" data-i18n-title="counter.resetTitle" title="清零本次计数">↺</button>
           </div>
         </div>
       </div>
@@ -51,20 +51,20 @@
     <!-- 速度档位调节 -->
     <section class="control-section">
       <div class="section-header-row">
-        <span class="section-label">⚡ 速度档位调节</span>
+        <span class="section-label" data-i18n="speed.label">⚡ 速度档位调节</span>
       </div>
       <div class="speed-selector">
         <button class="speed-btn active" data-speed="0">
-          <span class="speed-title">休闲拟真</span>
-          <span class="speed-desc">~10 次/秒 · 办公推荐</span>
+          <span class="speed-title" data-i18n="speed.0.title">休闲拟真</span>
+          <span class="speed-desc" data-i18n="speed.0.desc">~10 次/秒 · 办公推荐</span>
         </button>
         <button class="speed-btn" data-speed="1">
-          <span class="speed-title">快速进阶</span>
-          <span class="speed-desc">~25 次/秒 · 快速刷分</span>
+          <span class="speed-title" data-i18n="speed.1.title">快速进阶</span>
+          <span class="speed-desc" data-i18n="speed.1.desc">~25 次/秒 · 快速刷分</span>
         </button>
         <button class="speed-btn" data-speed="2">
-          <span class="speed-title">极速狂暴</span>
-          <span class="speed-desc">~50 次/秒 · 极限冲刺</span>
+          <span class="speed-title" data-i18n="speed.2.title">极速狂暴</span>
+          <span class="speed-desc" data-i18n="speed.2.desc">~50 次/秒 · 极限冲刺</span>
         </button>
       </div>
     </section>
@@ -76,18 +76,18 @@
           <rect x="2" y="4" width="20" height="16" rx="3"></rect>
           <path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M18 12h.01M8 16h8"></path>
         </svg>
-        <span class="hotkey-label">全局启停热键</span>
+        <span class="hotkey-label" data-i18n="hotkey.label">全局启停热键</span>
       </div>
       <div class="hotkey-right">
-        <button id="btn-hotkey" class="hotkey-badge" title="点击后按键盘任意键设置新快捷键">
+        <button id="btn-hotkey" class="hotkey-badge" data-i18n-title="hotkey.badgeTitle" title="点击后按键盘任意键设置新快捷键">
           <span id="lbl-hotkey">F6</span>
         </button>
-        <span class="hotkey-tip" id="hotkey-tip">点击修改</span>
+        <span class="hotkey-tip" id="hotkey-tip" data-i18n="hotkey.tip">点击修改</span>
       </div>
     </div>
 
     <!-- 待支持功能卡片：自动开箱 -->
-    <div class="feature-preview-card" title="自动开箱功能将在后续版本更新中上线">
+    <div class="feature-preview-card" data-i18n-title="feature.tooltip" title="自动开箱功能将在后续版本更新中上线">
       <div class="fp-left">
         <div class="fp-icon-wrap">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -98,21 +98,26 @@
         </div>
         <div class="fp-text">
           <div class="fp-title-row">
-            <strong class="fp-title">自动开箱</strong>
-            <span class="fp-tag">待支持</span>
+            <strong class="fp-title" data-i18n="feature.title">自动开箱</strong>
+            <span class="fp-tag" data-i18n="feature.tag">待支持</span>
           </div>
-          <p class="fp-desc">满额自动开箱抽取表情与配件，后续版本上线</p>
+          <p class="fp-desc" data-i18n="feature.desc">满额自动开箱抽取表情与配件，后续版本上线</p>
         </div>
       </div>
       <div class="fp-status">
-        <span class="fp-lock">规划中</span>
+        <span class="fp-lock" data-i18n="feature.status">规划中</span>
       </div>
     </div>
 
     <!-- 底部控制栏 -->
     <footer class="app-footer">
-      <button id="btn-hide" class="footer-btn">收进系统托盘</button>
-      <button id="btn-quit" class="footer-btn danger">退出程序</button>
+      <label class="footer-label" for="lang-select" data-i18n="lang.label">语言</label>
+      <select id="lang-select" class="lang-select" style="background:#1e1e2e;color:#fff;border:1px solid #444;border-radius:6px;padding:4px 6px">
+        <option value="zh">中文</option>
+        <option value="vi">Tiếng Việt</option>
+      </select>
+      <button id="btn-hide" class="footer-btn" data-i18n="footer.hide">收进系统托盘</button>
+      <button id="btn-quit" class="footer-btn danger" data-i18n="footer.quit">退出程序</button>
     </footer>
 
     <!-- 更新弹窗 (Modal) -->
@@ -124,33 +129,33 @@
               <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
               <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
             </svg>
-            <h3>版本与更新</h3>
+            <h3 data-i18n="update.title">版本与更新</h3>
           </div>
           <button class="modal-close-btn" id="btn-modal-close">✕</button>
         </div>
 
         <div class="modal-body">
           <div class="version-row">
-            <span class="v-label">当前运行版本</span>
+            <span class="v-label" data-i18n="update.current">当前运行版本</span>
             <span class="v-val current" id="lbl-cur-version">v0.1.0</span>
           </div>
           <div class="version-row">
-            <span class="v-label">最新发布版本</span>
-            <span class="v-val latest" id="lbl-latest-version">检测中...</span>
+            <span class="v-label" data-i18n="update.latest">最新发布版本</span>
+            <span class="v-val latest" id="lbl-latest-version" data-i18n="update.checking">检测中...</span>
           </div>
 
           <div class="update-status-box" id="update-status-box">
             <div class="spinner" id="update-spinner" style="display: none;"></div>
-            <p id="update-status-text">点击下方按钮获取最新版本信息</p>
+            <p id="update-status-text" data-i18n="update.checkHint">点击下方按钮获取最新版本信息</p>
           </div>
 
           <!-- 当有新版本时显示的 GitHub 仓库下载安装指引 -->
           <div class="update-guide-card" id="update-guide-card" style="display: none;">
             <div class="guide-header">
-              <span class="guide-tag">新版安装指引</span>
-              <span class="guide-tip">请前往 GitHub 仓库下载并安装新版本：</span>
+              <span class="guide-tag" data-i18n="update.guideTag">新版安装指引</span>
+              <span class="guide-tip" data-i18n="update.guideTip">请前往 GitHub 仓库下载并安装新版本：</span>
             </div>
-            <a id="link-github-repo" class="github-repo-url" href="https://github.com/To0Ru/AutoTappo/releases" target="_blank" title="点击在浏览器中打开 GitHub 仓库">
+            <a id="link-github-repo" class="github-repo-url" href="https://github.com/To0Ru/AutoTappo/releases" target="_blank" data-i18n-title="update.githubTitle" title="点击在浏览器中打开 GitHub 仓库">
               <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
                 <line x1="8" y1="12" x2="16" y2="12"></line>
@@ -160,7 +165,7 @@
           </div>
 
           <div class="changelog-area" id="changelog-area" style="display: none;">
-            <label class="cl-title">新版本亮点：</label>
+            <label class="cl-title" data-i18n="update.highlights">新版本亮点：</label>
             <div class="cl-content" id="changelog-content"></div>
           </div>
         </div>
@@ -168,9 +173,9 @@
         <div class="modal-footer">
           <button id="btn-check-now" class="modal-btn primary">
             <span id="btn-check-icon">🔄</span>
-            <span id="btn-check-text">立即检查更新</span>
+            <span id="btn-check-text" data-i18n="update.checkNow">立即检查更新</span>
           </button>
-          <a id="btn-download" class="modal-btn action" href="https://github.com/To0Ru/AutoTappo/releases" target="_blank" style="display: none;">
+          <a id="btn-download" class="modal-btn action" href="https://github.com/To0Ru/AutoTappo/releases" target="_blank" data-i18n="update.download" style="display: none;">
             前往 GitHub 仓库安装新版 ↗
           </a>
         </div>
@@ -178,6 +183,7 @@
     </div>
   </div>
 
+  <script src="i18n.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

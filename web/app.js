@@ -82,10 +82,10 @@
     // 1. 运行状态徽章
     if (statusBadge) {
       if (currentRunning) {
-        statusBadge.textContent = "运行中";
+        statusBadge.textContent = t("status.running");
         statusBadge.classList.add("running");
       } else {
-        statusBadge.textContent = "已暂停";
+        statusBadge.textContent = t("status.paused");
         statusBadge.classList.remove("running");
       }
     }
@@ -100,11 +100,11 @@
       if (currentRunning) {
         btnToggle.classList.add("running");
         btnToggleIcon.textContent = "⏸";
-        btnToggleText.textContent = `暂停挂机 (${currentHotkeyName})`;
+        btnToggleText.textContent = `${t("toggle.pause")} (${currentHotkeyName})`;
       } else {
         btnToggle.classList.remove("running");
         btnToggleIcon.textContent = "▶";
-        btnToggleText.textContent = `开始挂机 (${currentHotkeyName})`;
+        btnToggleText.textContent = `${t("toggle.start")} (${currentHotkeyName})`;
       }
     }
 
@@ -218,7 +218,7 @@
         console.error("Failed to minimize:", err);
       }
     } else {
-      alert("【预览提示】在编译后的应用中，点击将无缝收进 Windows 系统托盘守护。");
+      alert(t("preview.hide"));
     }
   };
 
@@ -233,16 +233,16 @@
           console.error("Failed to quit app:", err);
         }
       } else {
-        alert("【预览提示】在编译后的应用中，点击将完全退出守护进程。");
+        alert(t("preview.quit"));
       }
     });
   }
 
   // ---------------- 全局热键自定义录制逻辑 ----------------
   const FORBIDDEN_HOTKEYS = {
-    F7: "F7 为官方游戏模式键，无法绑定",
-    F8: "F8 为官方多屏幕切换键，无法绑定",
-    F9: "F9 为官方老板键隐藏键，无法绑定",
+    F7: "hotkey.forbidden.f7",
+    F8: "hotkey.forbidden.f8",
+    F9: "hotkey.forbidden.f9",
   };
 
   function getWinVirtualKey(e) {
@@ -288,8 +288,8 @@
   function startRecording() {
     isRecordingHotkey = true;
     if (btnHotkey) btnHotkey.classList.add("recording");
-    if (lblHotkey) lblHotkey.textContent = "请按键...";
-    if (hotkeyTip) hotkeyTip.textContent = "按 Esc 取消";
+    if (lblHotkey) lblHotkey.textContent = t("hotkey.recording");
+    if (hotkeyTip) hotkeyTip.textContent = t("hotkey.cancel");
 
     window.addEventListener("keydown", handleRecordKey, { capture: true });
   }
@@ -298,7 +298,7 @@
     isRecordingHotkey = false;
     if (btnHotkey) btnHotkey.classList.remove("recording");
     if (lblHotkey) lblHotkey.textContent = currentHotkeyName;
-    if (hotkeyTip) hotkeyTip.textContent = "点击修改";
+    if (hotkeyTip) hotkeyTip.textContent = t("hotkey.tip");
     window.removeEventListener("keydown", handleRecordKey, { capture: true });
   }
 
@@ -312,14 +312,14 @@
     }
 
     if (FORBIDDEN_HOTKEYS[e.key]) {
-      alert(`【提示】${FORBIDDEN_HOTKEYS[e.key]}，请换其他按键。`);
+      alert(t("hotkey.forbiddenNote", { msg: t(FORBIDDEN_HOTKEYS[e.key]) }));
       cancelRecording();
       return;
     }
 
     const result = getWinVirtualKey(e);
     if (!result) {
-      alert("【提示】请按下有效的功能键 (如 F1~F6, F10~F12, Home, PgUp, 数字小键盘等)");
+      alert(t("hotkey.invalid"));
       cancelRecording();
       return;
     }
@@ -333,9 +333,9 @@
     if (lblHotkey) lblHotkey.textContent = currentHotkeyName;
     if (btnHotkey) btnHotkey.classList.remove("recording");
     if (hotkeyTip) {
-      hotkeyTip.textContent = "修改成功";
+      hotkeyTip.textContent = t("hotkey.success");
       setTimeout(() => {
-        hotkeyTip.textContent = "点击修改";
+        hotkeyTip.textContent = t("hotkey.tip");
       }, 1500);
     }
 
@@ -403,9 +403,9 @@
     if (!silent) {
       if (updateSpinner) updateSpinner.style.display = "inline-block";
       if (updateStatusBox) updateStatusBox.className = "update-status-box";
-      if (updateStatusText) updateStatusText.textContent = "正在通过 Gitee 国内高速通道检查最新版本...";
+      if (updateStatusText) updateStatusText.textContent = t("update.checkingVia");
       if (btnCheckNow) btnCheckNow.disabled = true;
-      if (btnCheckText) btnCheckText.textContent = "正在检查...";
+      if (btnCheckText) btnCheckText.textContent = t("update.checkingNow");
       if (changelogArea) changelogArea.style.display = "none";
       if (updateGuideCard) updateGuideCard.style.display = "none";
       if (btnDownload) btnDownload.style.display = "none";
@@ -442,7 +442,7 @@
     if (!silent) {
       if (updateSpinner) updateSpinner.style.display = "none";
       if (btnCheckNow) btnCheckNow.disabled = false;
-      if (btnCheckText) btnCheckText.textContent = "再次检查";
+      if (btnCheckText) btnCheckText.textContent = t("update.checkAgain");
     }
 
     applyUpdateData(cachedLatestData, silent);
@@ -461,10 +461,10 @@
         if (updateDot) updateDot.classList.add("active");
         if (updateStatusBox) updateStatusBox.className = "update-status-box has-new";
         if (updateStatusText) {
-          updateStatusText.innerHTML = `🎉 <strong>发现新版本 ${latestTag} (${source} 源)</strong>`;
+          updateStatusText.innerHTML = t("update.newVersion", { tag: latestTag, source: source });
         }
 
-        const body = latestData.body || latestData.description || "包含稳定性优化与体验升级。";
+        const body = latestData.body || latestData.description || t("update.fallbackBody");
         if (changelogContent) changelogContent.textContent = body;
         if (changelogArea) changelogArea.style.display = "block";
 
@@ -482,7 +482,7 @@
       } else {
         if (updateDot) updateDot.classList.remove("active");
         if (updateStatusBox) updateStatusBox.className = "update-status-box is-latest";
-        if (updateStatusText) updateStatusText.textContent = `✨ 当前已是最新版本！(${source} 源同步)`;
+        if (updateStatusText) updateStatusText.textContent = t("update.isLatest", { source: source });
         if (changelogArea) changelogArea.style.display = "none";
         if (updateGuideCard) updateGuideCard.style.display = "none";
         if (btnDownload) btnDownload.style.display = "none";
@@ -492,7 +492,7 @@
       if (lblLatestVersion) lblLatestVersion.textContent = CURRENT_VERSION;
       if (updateStatusBox) updateStatusBox.className = "update-status-box is-latest";
       if (updateStatusText) {
-        updateStatusText.textContent = `✨ 当前运行版本 ${CURRENT_VERSION} 已是最新稳定版！`;
+        updateStatusText.textContent = t("update.isLatestStable", { ver: CURRENT_VERSION });
       }
       if (changelogArea) changelogArea.style.display = "none";
       if (updateGuideCard) updateGuideCard.style.display = "none";
@@ -517,6 +517,32 @@
     }
   });
   triggerAutoCheck();
+
+  // ---------------- 语言设置 ----------------
+  const langSelect = document.getElementById("lang-select");
+  if (langSelect) {
+    langSelect.value = window.getCurrentLang();
+    langSelect.addEventListener("change", () => {
+      window.applyLanguage(langSelect.value);
+      if (isTauri) {
+        invoke("set_language", { lang: langSelect.value }).catch(() => {});
+      }
+      updateUI({
+        running: currentRunning,
+        speed_mode: currentSpeed,
+        total_sent: localSentCount,
+      });
+    });
+  }
+  window.applyLanguage(window.getCurrentLang());
+  updateUI({
+    running: currentRunning,
+    speed_mode: currentSpeed,
+    total_sent: localSentCount,
+  });
+  if (isTauri) {
+    invoke("set_language", { lang: window.getCurrentLang() }).catch(() => {});
+  }
 
   // 启动状态轮询
   pollStatus();

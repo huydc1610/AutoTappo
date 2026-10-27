@@ -6,22 +6,80 @@ use std::sync::atomic::Ordering;
 use std::sync::Arc;
 use tauri::menu::{Menu, MenuItem, PredefinedMenuItem};
 use tauri::tray::{MouseButton, MouseButtonState, TrayIcon, TrayIconBuilder, TrayIconEvent};
+use tauri::{AppHandle, Manager};
 
 use crate::{window, Inner};
+
+/// 托盘菜单文案：(显示面板, 启动/暂停, 退出, 悬浮提示)。
+/// 默认中文；`vi` 为越南语（与前端 web/i18n.js 的语言键保持一致）。
+pub fn labels(lang: &str) -> (&'static str, &'static str, &'static str, &'static str) {
+    if lang == "vi" {
+        (
+            "Hiển thị bảng điều khiển",
+            "Bật / Tạm dừng treo máy (F6)",
+            "Thoát AutoTappo",
+            "AutoTappo · Trợ lý treo máy WuwaTappo",
+        )
+    } else {
+        (
+            "显示控制面板",
+            "启动 / 暂停挂机 (F6)",
+            "退出 AutoTappo",
+            "AutoTappo · 鸣潮桌宠挂机助手",
+        )
+    }
+}
+
+/// 窗口标题（与前端 web/i18n.js 的 app.title 保持一致）。
+fn title_for(lang: &str) -> &'static str {
+    if lang == "vi" {
+        "AutoTappo · Trợ lý treo máy WuwaTappo"
+    } else {
+        "AutoTappo · 鸣潮桌宠挂机助手"
+    }
+}
+
+fn build_menu<M: Manager>(
+    app: &M,
+    show: &str,
+    toggle: &str,
+    quit: &str,
+) -> tauri::Result<Menu> {
+    let show = MenuItem::with_id(app, "show", show, true, None::<&str>)?;
+    let toggle = MenuItem::with_id(app, "toggle", toggle, true, None::<&str>)?;
+    let sep = PredefinedMenuItem::separator(app)?;
+    let quit = MenuItem::with_id(app, "quit", quit, true, None::<&str>)?;
+    let menu = Menu::with_items(app, &[&show, &toggle, &sep, &quit])?;
+    Ok(menu)
+}
+
+/// 前端切换语言时调用：重建托盘菜单、更新悬浮提示与窗口标题。
+/// 菜单项 id 保持不变，因此 build() 里注册的 on_menu_event 处理逻辑继续生效。
+pub fn apply_language(app: &AppHandle, inner: &Arc<Inner>, lang: &str) {
+    let (show, toggle, quit, tooltip) = labels(lang);
+    if let Ok(slot) = inner.tray.lock() {
+        if let Some(icon) = slot.as_ref() {
+            if let Ok(menu) = build_menu(app, show, toggle, quit) {
+                let _ = icon.set_menu(Some(menu));
+            }
+            let _ = icon.set_tooltip(tooltip);
+        }
+    }
+    if let Some(w) = app.get_webview_window(window::LABEL) {
+        let _ = w.set_title(title_for(lang));
+    }
+}
 
 /// 构建托盘图标句柄。
 /// 必须将其存放在 `Inner` 共享状态中，否则句柄析构后托盘图标会随之消失。
 pub fn build(app: &tauri::App, inner: Arc<Inner>) -> tauri::Result<TrayIcon> {
-    let show = MenuItem::with_id(app, "show", "显示控制面板", true, None::<&str>)?;
-    let toggle = MenuItem::with_id(app, "toggle", "启动 / 暂停挂机 (F6)", true, None::<&str>)?;
-    let sep = PredefinedMenuItem::separator(app)?;
-    let quit = MenuItem::with_id(app, "quit", "退出 AutoTappo", true, None::<&str>)?;
-    let menu = Menu::with_items(app, &[&show, &toggle, &sep, &quit])?;
+    let (show, toggle, quit, tooltip) = labels("zh");
+    let menu = build_menu(app, show, toggle, quit)?;
 
     let inner_for_menu = Arc::clone(&inner);
 
     let mut builder = TrayIconBuilder::with_id("main")
-        .tooltip("AutoTappo · 鸣潮桌宠挂机助手")
+        .tooltip(tooltip)
         .menu(&menu)
         .show_menu_on_left_click(false)
         .on_menu_event(move |app, event| match event.id.as_ref() {

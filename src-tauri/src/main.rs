@@ -75,6 +75,7 @@ fn main() {
             commands::set_speed,
             commands::set_hotkey,
             commands::get_hotkey,
+            commands::set_language,
             commands::reset_sent_count,
             commands::minimize_to_tray,
             commands::quit_app,

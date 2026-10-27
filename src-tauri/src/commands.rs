@@ -62,6 +62,14 @@ pub fn reset_sent_count(state: State<'_, AppState>) {
     inner.clicker.total_sent.store(0, Ordering::SeqCst);
 }
 
+/// 前端语言设置切换时调用：重建托盘菜单并更新窗口标题。
+/// 语言键与前端 web/i18n.js 保持一致（"zh" / "vi"），未知语言回退中文。
+#[tauri::command]
+pub fn set_language(state: State<'_, AppState>, app: AppHandle, lang: String) {
+    let inner = &state.0;
+    crate::tray::apply_language(&app, inner, &lang);
+}
+
 #[tauri::command]
 pub fn minimize_to_tray(app: AppHandle) {
     let _ = window::close(&app);

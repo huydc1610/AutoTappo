@@ -143,3 +143,13 @@ autotappo/
   git push origin v0.1.0
   ```
   GitHub Actions 会全自动打包 Release 并挂载 NSIS 安装包与 Portable 便携版。
+
+---
+
+## 8. 多语言设置 (i18n)
+
+- 前端词典：`web/i18n.js`（IIFE + `'use strict'`，与 `app.js` 的隔离规范一致），语言键 `zh`（默认）/ `vi`，`localStorage` 键 `autotappo_lang`。
+- 静态文案：`index.html` 用 `data-i18n`（内容）/ `data-i18n-title`（title 属性）标记，`applyLanguage()` 统一刷新；动态文案（状态徽章、启停按钮、更新弹窗）在 `app.js` 里用 `t(key)` / `t(key, { tag, source })`。
+- 语言选择器：页脚 `#lang-select`（中文 / Tiếng Việt），切换时调用 `applyLanguage()` + `updateUI()` 刷新动态文案，并通过 `set_language` 命令同步后端。
+- 后端：`commands::set_language` → `tray::apply_language()`，用同一组 id（show/toggle/quit）重建托盘菜单（`on_menu_event` 处理逻辑不受影响），并更新窗口标题；`tray::labels()` / `title_for()` 与前端 `app.title` 保持一致。
+- 注意：窗口在启动时先以默认中文标题创建，前端加载后发送已保存的语言才会同步标题与托盘；如需启动即正确语言，需把语言持久化到后端启动时可读的文件。
